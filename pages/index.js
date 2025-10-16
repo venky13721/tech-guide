@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { detailed, TAB_ORDER, local } from '../data/roadmapsData';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { detailed, TAB_ORDER, local } from "../data/roadmapsData";
 import VistaModal from "./modal";
 
 export default function IndexPage() {
@@ -8,19 +8,19 @@ export default function IndexPage() {
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [sike, setSike] = useState(false);
   const [activeTab, setActiveTab] = useState(TAB_ORDER[0]);
-  const [heartClickCount, setHeartClickCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         setIntroDone(true);
-        if (audioEnabled && audioRef.current) audioRef.current.play().catch(() => {});
+        if (audioEnabled && audioRef.current)
+          audioRef.current.play().catch(() => {});
       }
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [audioEnabled]);
 
   const enableAudioAndStart = () => {
@@ -36,6 +36,10 @@ export default function IndexPage() {
     setTimeout(() => setSike(false), 1000);
   };
 
+  const heartOnClicked = () => {
+    setShowModal(true);
+  };
+
   const renderAside = (detail) => (
     <aside className="aside-panel">
       <h4>Skills to build</h4>
@@ -48,15 +52,6 @@ export default function IndexPage() {
       <ul>{(detail.projects || []).map((p, i) => <li key={i}>{p}</li>)}</ul>
     </aside>
   );
-
-  const heartOnClicked = () => {
-    const newCount = heartClickCount + 1;
-    setHeartClickCount(newCount);
-    if(newCount > 0) {
-      setShowModal(true)
-      setHeartClickCount(0);
-    }
-  }
 
   const renderContent = (detail) => (
     <section className="tab-content">
@@ -81,7 +76,10 @@ export default function IndexPage() {
               <div key={i} className="week-block">
                 <strong>{w.title || `Step ${i + 1}`}</strong>
                 <div className="week-tasks">
-                  {(w.tasks || w.items || (typeof w === 'string' ? [w] : [])).map((t, j) => (
+                  {(w.tasks ||
+                    w.items ||
+                    (typeof w === "string" ? [w] : [])
+                  ).map((t, j) => (
                     <div key={j}>{t}</div>
                   ))}
                 </div>
@@ -97,10 +95,18 @@ export default function IndexPage() {
           <h3>Resources</h3>
           <ul>
             {detail.resources.map((r, i) =>
-              typeof r === 'string' ? (
-                <li key={i}><a href={r} target="_blank" rel="noreferrer">{r}</a></li>
+              typeof r === "string" ? (
+                <li key={i}>
+                  <a href={r} target="_blank" rel="noreferrer">
+                    {r}
+                  </a>
+                </li>
               ) : (
-                <li key={i}><a href={r.url} target="_blank" rel="noreferrer">{r.title || r.url}</a></li>
+                <li key={i}>
+                  <a href={r.url} target="_blank" rel="noreferrer">
+                    {r.title || r.url}
+                  </a>
+                </li>
               )
             )}
           </ul>
@@ -113,8 +119,12 @@ export default function IndexPage() {
 
   return (
     <div className="main-bg">
+      {/* Modal */}
+      {showModal && (
+        <VistaModal open={showModal} onClose={() => setShowModal(false)} />
+      )}
+
       {/* Intro Overlay */}
-      {showModal && <VistaModal />}
       <AnimatePresence>
         {!introDone && (
           <motion.div
@@ -128,22 +138,22 @@ export default function IndexPage() {
               className="intro-card"
               initial={{ scale: 0.98, y: 8, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 80, damping: 14 }}
+              transition={{ type: "spring", stiffness: 80, damping: 14 }}
             >
               <div className="intro-header">
                 <img src={local.cat_gamer} alt="cat" />
-                <div>
-                 
-                </div>
               </div>
+
               <div className="intro-text">
                 <div>Ni Hao Fine Shyt.🐾</div>
                 <div>Wanna be a tech baddie?</div>
               </div>
+
               <div className="intro-buttons">
                 <button onClick={enableAudioAndStart}>Yes I do 😊</button>
                 <button onClick={handleSikeClick}>😤 Nah I don't want to</button>
               </div>
+
               {sike && <motion.div className="sike-text">sike 😏</motion.div>}
               <audio ref={audioRef} src={local.sound} loop />
             </motion.div>
@@ -156,9 +166,15 @@ export default function IndexPage() {
         <header className="page-header">
           <img src={local.cat_typing} alt="cat" />
           <div>
-            <h1>Tech Glow-Up Guide <span>by Venky<span id="heart" className="glow-heart" onClick={heartOnClicked}>💙</span>
-</span></h1>
-            
+            <h1>
+              Tech Glow-Up Guide{" "}
+              <span>
+                by Venky
+                <span className="glow-heart" onClick={heartOnClicked}>
+                  💙
+                </span>
+              </span>
+            </h1>
           </div>
         </header>
 
@@ -166,7 +182,7 @@ export default function IndexPage() {
           {TAB_ORDER.map((id) => (
             <button
               key={id}
-              className={activeTab === id ? 'active' : ''}
+              className={activeTab === id ? "active" : ""}
               onClick={() => setActiveTab(id)}
             >
               {detailed[id].title}
@@ -179,8 +195,13 @@ export default function IndexPage() {
           {renderContent(activeDetail)}
         </div>
 
-        <footer>Made with <span id="heart" className="glow-heart" onClick={heartOnClicked}>💙</span>
-, cats, code, and slightly aggressive charm.</footer>
+        <footer>
+          Made with{" "}
+          <span className="glow-heart" onClick={heartOnClicked}>
+            💙
+          </span>
+          , cats, code, and slightly aggressive charm.
+        </footer>
       </main>
     </div>
   );
