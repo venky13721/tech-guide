@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { detailed, TAB_ORDER, local } from '../data/roadmapsData';
+import VistaModal from "./modal";
 
 export default function IndexPage() {
   const [introDone, setIntroDone] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [sike, setSike] = useState(false);
   const [activeTab, setActiveTab] = useState(TAB_ORDER[0]);
+  const [heartClickCount, setHeartClickCount] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -45,6 +48,15 @@ export default function IndexPage() {
       <ul>{(detail.projects || []).map((p, i) => <li key={i}>{p}</li>)}</ul>
     </aside>
   );
+
+  const heartOnClicked = () => {
+    const newCount = heartClickCount + 1;
+    setHeartClickCount(newCount);
+    if(newCount > 2) {
+      setShowModal(true)
+      setHeartClickCount(0);
+    }
+  }
 
   const renderContent = (detail) => (
     <section className="tab-content">
@@ -102,6 +114,7 @@ export default function IndexPage() {
   return (
     <div className="main-bg">
       {/* Intro Overlay */}
+      {showModal && <VistaModal />}
       <AnimatePresence>
         {!introDone && (
           <motion.div
@@ -143,7 +156,7 @@ export default function IndexPage() {
         <header className="page-header">
           <img src={local.cat_typing} alt="cat" />
           <div>
-            <h1>Tech Glow-Up Guide <span>by Venky💙</span></h1>
+            <h1>Tech Glow-Up Guide <span>by Venky <span id="heart" onClick={heartOnClicked}>💙</span></span></h1>
             
           </div>
         </header>
@@ -165,7 +178,7 @@ export default function IndexPage() {
           {renderContent(activeDetail)}
         </div>
 
-        <footer>Made with 💙, cats, code, and slightly aggressive charm.</footer>
+        <footer>Made with <span id="heart" onClick={heartOnClicked}>💙</span>, cats, code, and slightly aggressive charm.</footer>
       </main>
     </div>
   );
