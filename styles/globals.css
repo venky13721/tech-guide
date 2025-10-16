@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+:root{--gb-dark:#062b48;--gb-mid:#0b67a3;--gb-accent:#00aaff;--gb-pale:#dff6ff;}
+html,body,#__next{height:100%;margin:0;padding:0;}
+body{font-family:'VT323','Press Start 2P',monospace;background:#0b67a3;color:rgb(29, 126, 217);}
+.card{background:white;color:#0b67a3;border-radius:12px;padding:16px;margin:8px;}
+.gamer-title{font-family:'Press Start 2P',monospace;color:var(--gb-accent);}
+.overlay{position:fixed;inset:0;background:#0b67a3;color:white;overflow:auto;padding:20px;z-index:50;}
