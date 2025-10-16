@@ -52,7 +52,7 @@ export default function IndexPage() {
   const heartOnClicked = () => {
     const newCount = heartClickCount + 1;
     setHeartClickCount(newCount);
-    if(newCount > 2) {
+    if(newCount > 0) {
       setShowModal(true)
       setHeartClickCount(0);
     }
@@ -156,7 +156,8 @@ export default function IndexPage() {
         <header className="page-header">
           <img src={local.cat_typing} alt="cat" />
           <div>
-            <h1>Tech Glow-Up Guide <span>by Venky <span id="heart" onClick={heartOnClicked}>💙</span></span></h1>
+            <h1>Tech Glow-Up Guide <span>by Venky<span id="heart" className="glow-heart" onClick={heartOnClicked}>💙</span>
+</span></h1>
             
           </div>
         </header>
@@ -178,7 +179,8 @@ export default function IndexPage() {
           {renderContent(activeDetail)}
         </div>
 
-        <footer>Made with <span id="heart" onClick={heartOnClicked}>💙</span>, cats, code, and slightly aggressive charm.</footer>
+        <footer>Made with <span id="heart" className="glow-heart" onClick={heartOnClicked}>💙</span>
+, cats, code, and slightly aggressive charm.</footer>
       </main>
     </div>
   );
